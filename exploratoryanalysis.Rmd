@@ -1,0 +1,77 @@
+---
+title: "project analysis"
+author: "avinash betha"
+date: "`r Sys.Date()`"
+output: word_document
+---
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+library(readr)
+
+# Read the CSV file
+data <- read_csv("C:/Depaul/2 quater/Data Visualization/projects/master.csv", show_col_types = FALSE)
+```
+
+
+```{r}
+
+# View the structure of the dataset
+str(data)
+```
+
+```{r}
+# Summary statistics
+summary(data)
+```
+
+```{r}
+# Data visualization
+# Histogram for suicides per 100k population
+ggplot(data, aes(x = suicides_100k_pop)) +
+  geom_histogram(binwidth = 10, fill = "skyblue", color = "black") +
+  labs(title = "Distribution of Suicide Rates per 100k Population", x = "Suicides per 100k Population", y = "Frequency")
+```
+
+```{r}
+# Box plot for suicides per 100k population by sex
+ggplot(data, aes(x = sex, y = suicides_100k_pop)) +
+  geom_boxplot(fill = "lightgreen") +
+  labs(title = "Suicide Rates per 100k Population by Gender", x = "Gender", y = "Suicides per 100k Population")
+```
+
+
+```{r}
+# Scatter plot for suicides per 100k population vs. GDP per capita
+ggplot(data, aes(x = gdp_per_capita, y = `suicides_100k_pop`)) +
+  geom_point(color = "blue") +
+  labs(title = "Suicide Rates per 100k Population vs. GDP per Capita", x = "GDP per Capita", y = "Suicides per 100k Population") +
+  scale_x_continuous(labels = scales::comma)  # Format x-axis labels with commas
+```
+
+
+```{r}
+# Bar plot for total suicides by generation
+data %>%
+  group_by(generation) %>%
+  summarise(total_suicides = sum(suicides_no)) %>%
+  ggplot(aes(x = generation, y = total_suicides)) +
+  geom_bar(stat = "identity", fill = "orange") +
+  labs(title = "Total Suicides by Generation", x = "Generation", y = "Total Suicides")
+```
+
+
+```{r}
+# Scatter plot matrix for numerical variables
+pairs(data[, c(5:7, 10:11)])
+```
+
+```{r}
+# Correlation matrix
+cor(data[, c(5:7, 10:11)])
+
+
+```
+
